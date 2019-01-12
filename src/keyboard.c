@@ -2478,8 +2478,11 @@ read_char (int commandflag, Lisp_Object map,
 	  input_was_pending = input_pending;
 	  if (help_echo_showing_p && !EQ (selected_window, minibuf_window))
 	    redisplay_preserve_echo_area (5);
-	  else
+	  else {
+	    if (!NILP (Ffboundp (intern ("minibuffer-line--update"))))
+	      call0 (intern ("minibuffer-line--update"));
 	    redisplay ();
+	  }
 
 	  if (!input_pending)
 	    /* Normal case: no input arrived during redisplay.  */
